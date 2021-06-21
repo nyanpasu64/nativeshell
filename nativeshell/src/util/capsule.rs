@@ -4,6 +4,12 @@ use crate::shell::RunLoopSender;
 
 // Thread bound capsule; Allows retrieving the value only on the thread
 // where it was stored.
+//
+// Safety: Rust's current implementation of ThreadId::new()
+// produces a unique value every time,
+// and will never reuse the ID of a dead thread for future threads.
+// (This is unlike system-native thread IDs,
+// where dead threads' IDs may be reused for future threads.)
 pub struct Capsule<T>
 where
     T: 'static,
